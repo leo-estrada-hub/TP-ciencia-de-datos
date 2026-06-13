@@ -1,6 +1,11 @@
 #creación de la variación del empleo 
 
+#Para el mapa 
 library(tidyverse)
+library(sf)
+library(geoAr)
+library(ggtext)
+library(scales)
 
 tabla_rca <- readRDS("02_scripts/rds/base_filtrada.rds") #utilizamos el rds del rca ya construido
 
@@ -37,12 +42,6 @@ empleo_mapa <- empleo_vc %>%
   mutate(  variacion_pct = (empleo_2024 / empleo_2004 - 1) * 100)
 
 #creación del mapa
-
-library(tidyverse)
-library(sf)
-library(geoAr)
-library(ggtext)
-library(scales)
 
 
 cap <- "Datos: elaboración propia en base a VAB provincial y empleo registrado." 
