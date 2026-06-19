@@ -52,7 +52,9 @@ procesar_provincia <- function(sheet){
   
   datos <-
     datos %>%
-    filter(!is.na(sector_original))
+    filter(!is.na(sector_original) ,
+  sector_original != "Serie anterior"
+  )
   
   ## pasar a formato largo
   
@@ -69,11 +71,9 @@ procesar_provincia <- function(sheet){
   datos <-
     datos %>%
     mutate(
-      
       anio =
         stringr::str_extract(periodo,"[0-9]{4}") %>%
         as.integer(),
-      
       trimestre =
         stringr::str_extract(periodo,"^[1-4]")
     )

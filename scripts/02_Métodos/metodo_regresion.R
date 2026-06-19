@@ -4,6 +4,7 @@ library(ggplot2)
 library(lmtest)     # bptest(), coeftest()
 library(sandwich)   # vcovHC() — errores robustos
 library(car)        # vif()
+library(gt)
 
 options(scipen = 999)
 theme_set(theme_minimal(base_size = 12))
@@ -52,26 +53,6 @@ base_regresion_limpia <- base_regresion %>%
     vab > 0,
     empleo > 0
   )
-#Grafico exploratorio
-ggplot(
-  base_regresion_limpia,
-  aes(
-    x = log(vab),
-    y = log(empleo),
-    color = factor(dummy_rca)
-  )
-  +
-    geom_point(alpha = 0.03, size(0.6) +
-                 geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
-                 labs(
-                   x = "log(VAB)",
-                   y = "log(Empleo)",
-                   color = "RCA"
-                 ) + scale_color_manual(
-                   values = c("grey70", "#1f77b4"),
-                   labels = c("RCA ≤ 1", "RCA > 1")
-                 )
-
 
 #hago regresion
 base_regresion_limpia %>% 
@@ -145,22 +126,72 @@ bind_rows(
 vif(modelo_completo)
 #claramente el modelo completo es el que mejor ajusta
 
+#Grafico exploratorio
+ggplot(
+  base_regresion_limpia,
+  aes(
+    x = log(vab),
+    y = log(empleo),
+    color = factor(dummy_rca)
+  ))+
+  geom_point(alpha = 0.15, size= 1) +
+               geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
+               labs(
+                 x = "log(VAB)",
+                 y = "log(Empleo)",
+                 color = "RCA"
+               ) + scale_color_manual(
+                 values = c("grey70", "#1f77b4"),
+                 labels = c("RCA ≤ 1", "RCA > 1")
+               )
 
 
+#Visualización de coeficientescon gt
+tidy(modelo_completo) %>%
+  gt()%>%
+  fmt_number(
+    columns = c(estimate, std.error, statistic,p.value),
+    decimals = 3
+  )
 
+#Visualización de estadística con gt
 
-
-
-
-
-
-
-
-
-
-
-
-
+glance(modelo_completo)%>% #seleccionamos los datos a visualizar
+  select(
+    nobs,
+    r.squared,
+    adj.r.squared,
+    sigma,
+    statistic,
+    p.value
+  ) %>%
+  pivot_longer( #transformamos la tabla horizontal a vertical
+    everything(),
+    names_to = "Estadística", #renombramos columnas
+    values_to = "Valor"
+  ) %>%
+  mutate(
+    Estadística = dplyr::recode( #para que no lea otro recode de otro paquete (ejemplo car)
+      Estadística,
+      nobs = "Observaciones",
+      r.squared = "R²",
+      adj.r.squared = "R² ajustado",
+      sigma = "Error estándar residual",
+      statistic = "Estadístico F",
+      p.value = "p-valor"
+    )
+  )%>%
+  gt()%>%
+  fmt_number(  #para eliminar los ceros de observaciones y que solo quede el número cardinal de observaciones
+    columns = Valor,
+    rows = Estadística == "Observaciones",
+    decimals = 0
+  ) %>%
+  fmt_number( #para el resto de valores se les deja hasta 3 decimales
+    columns = Valor,
+    rows = Estadística != "Observaciones",
+    decimals = 3
+  )
 
 
 

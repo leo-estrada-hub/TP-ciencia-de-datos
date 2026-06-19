@@ -33,3 +33,4 @@ sectores_no_transables <- c(
 base_limpia <- base_limpia %>%
   filter(!sector %in% sectores_no_transables)
 
+saveRDS(base_limpia, "02_scripts/rds/base_filtrada.rds")
