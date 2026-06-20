@@ -48,7 +48,7 @@ empleo_mapa <- empleo_vc %>%
 #creación del mapa
 
 #7
-cap <- "Datos: elaboración propia en base a VAB provincial y empleo registrado." 
+cap <- "Fuente: Elaboración propia en base a datos de CEPAL–MECON y OEDE (Secretaría de Trabajo, Empleo y Seguridad Social)." 
 #8
 theme_owid_map <- function(base_size = 13) { #configuración estándar del tema del gráfico
   theme_void(base_size = base_size) +
@@ -84,7 +84,7 @@ mapa_datos <- arg %>%
              by = c("name_iso" = "provincia")
   )
 #12
-titulo_mapa <- "¿Cómo cambió el empleo en los sectores más competitivos de cada provincia?"  
+titulo_mapa <- "Los sectores más competitivos impulsaron el empleo en casi todas las provincias, aunque con resultados muy distintos"  
 #13
 g_mapa <- ggplot(mapa_datos) +
   geom_sf(aes(fill = variacion_pct), colour = "white", linewidth = 0.2) +  #leyenda y barra de colores
@@ -114,7 +114,7 @@ g_mapa +  #creación de flecha
     colour = "#08306b",
     arrow = arrow(length = unit(0.20, "cm"))
   ) +
-  annotate( #creación de comentarios
+  annotate( #creación de comentario
     "label",
     x = -81,
     y = -24.4,
@@ -122,37 +122,5 @@ g_mapa +  #creación de flecha
     hjust = 0,
     size = 4,
     fontface = "bold"
-  )+
-  annotate(
-    "label",
-    x = -84,
-    y = -34,
-    label =
-      "La mayoría de las provincias\nregistró aumentos de empleo.\nSin embargo, la magnitud del\n crecimiento fue diferente \n entre provincias.",
-    hjust = 0,
-    size = 3.5,
-    fontface = "bold"
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
