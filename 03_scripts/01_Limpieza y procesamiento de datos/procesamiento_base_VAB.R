@@ -60,16 +60,25 @@ procesar_provincia <- function(sheet_name, nombre_provincia){
     mutate(
       provincia = nombre_provincia,
       .before = 1
+    ) %>% filter(
+      !`Sector de actividad económica` %in% c("Asociaciones",
+                                              "Administración pública y defensa; Planes de seguridad social de afiliación obligatoria",
+                                              "VAB a precios básicos")
     ) %>% 
     mutate(
       sector_agregado = case_when(
-      `Sector de actividad económica` %in% c("Fabricación de gas ; distribución de combustibles gaseosos por tuberías","Generación captación y distribución de energía eléctrica") 
+      `Sector de actividad económica` %in% c("Fabricación de gas ; distribución de combustibles gaseosos por tuberías","Generación captación y distribución de energía eléctrica","Captación , depuración y distribución de agua") 
         ~ "Electricidad, gas y agua",
+      `Sector de actividad económica` %in% c( "Extracción de carbón y lignito; extracción de turba. Extracción de petróleo crudo y gas natural; actividades de servicios relacionadas con la extracción de petróleo y gas, excepto las actividades de prospección.", "Extracción de minerales metalíferos. Explotación de  minas y canteras n.c.p.")
+      ~ "EXPLOTACION  DE  MINAS  Y  CANTERAS",
       `Sector de actividad económica` %in% c( "Hoteles; campamentos y otros tipos de hospedaje temporal","Restaurantes, bares y cantinas")
       ~ "Servicios de hoteleria y restaurantes",
+      `Sector de actividad económica`== "Reparación, mantenimiento e instalación de maquinas y equipos" ~
+                                               "Fabricación de maquinaria y equipo n.c.p.",
       `Sector de actividad económica` %in% c( "Propiedad de la vivienda*", "Resto") ~ "Servicios inmobiliarios",
       `Sector de actividad económica` %in% c( "Salud pública", "Salud privada") ~ "Servicios sociales y de salud",
       `Sector de actividad económica` %in% c( "Enseñanza pública", "Enseñanza privada") ~ "Enseñanza",
+      `Sector de actividad económica`== "Servicio doméstico*" ~ "Servicios n.c.p.",
         TRUE ~ `Sector de actividad económica`
       )) %>%
   group_by(
@@ -130,6 +139,7 @@ vab_total_horiz <- vab_total %>%
 #guardo resultado para no correr toda la funcion
 
 saveRDS(vab_total_horiz, "02_input/vab_total_horiz.rds")
+
 
 
 

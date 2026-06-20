@@ -157,6 +157,37 @@ empleo_total <-
         "Tucuman"="Tucumán"
       )
     )
+empleo_total <-
+  empleo_total %>%
+  filter(
+    !sector_original %in% c(
+      "Extraccion de petroleo crudo y gas natural",
+      "Extraccion de minerales metaliferos",
+      "Explotacion de otras minas y canteras",
+      "CONSTRUCCION",
+      "AGRICULTURA, GANADERIA, CAZA Y SILVICULTURA",
+      "PESCA Y SERVICIOS CONEXOS",
+      "INDUSTRIA MANUFACTURERA",
+      "Electricidad, gas y agua",
+      "Captación, depuración y distribución de agua",
+      "COMERCIO AL POR MAYOR Y AL POR MENOR",
+      "HOTELERIA Y RESTAURANTES ",
+      "SERVICIOS DE TRANSPORTE, DE ALMACENAMIENTO Y DE COMUNICACIONES",
+      "INTERMEDIACION FINANCIERA Y OTROS SERVICIOS FINANCIEROS ",
+      "SERVICIOS SOCIALES Y DE SALUD",
+      "ENSEÑANZA",
+      "Servicios de organizaciones empresariales",
+      "Agencias de empleo eventual",
+      "Servicios jurídicos, contables y otros servicios a empresas",
+      "Investigación y desarrollo",
+      "Actividades de informática",
+      "Alquiler de equipo de transporte y de maquinaria",
+      "SERVICIOS COMUNITARIOS, SOCIALES Y PERSONALES N.C.P.",
+      "SERVICIOS INMOBILIARIOS, EMPRESARIALES Y DE ALQUILER",
+      "TOTAL",
+      "serie anterior"
+    )
+  )
 
 empleo_total <- empleo_total %>%
   mutate(
@@ -164,17 +195,14 @@ empleo_total <- empleo_total %>%
       sector_original == "Agricultura y ganaderia" ~ "Agricultura, ganaderia, caza y servicios conexos",
       sector_original == "Silvicultura, extracción de madera" ~ "Silvicultura, extracción de madera y servicios conexos",
       sector_original ==  "Pesca y actividades relacionadas con la pesca" ~ "Pesca" ,
-      sector_original %in% c( "Extracción de carbón y lignito; extracción de turba. Extracción de petróleo crudo y gas natural; actividades de servicios relacionadas con la extracción de petróleo y gas, excepto las actividades de prospección.
-", "Extracción de minerales metalíferos. Explotación de  minas y canteras n.c.p.")
- ~ "EXPLOTACION  DE  MINAS  Y  CANTERAS",
  sector_original ==  "Alimentos" ~ "Elaboración de productos alimenticios y bebidas" ,
  sector_original == "Tabaco"  ~ "Elaboración de productos de tabaco",
  sector_original ==  "Productos textiles" ~ "Fabricación de productos textiles",
  sector_original == "Confecciones" ~ "Fabricación de prendas de vestir; terminación y teñido de pieles",
- sector_original == "Calzado y cuero" ~ "Curtido y terminación de cueros; fabricación de artículos de marroquinería, talabartería y calzado y de sus partes",
+ sector_original %in% c("Calzado y cuero","Calzado y productos de cuero","Cuero","Cuero y calzado","Calzado") ~ "Curtido y terminación de cueros; fabricación de artículos de marroquinería, talabartería y calzado y de sus partes",
  sector_original == "Madera" ~ "Producción de madera y fabricación de productos de madera y corcho, excepto muebles; fabricación de artículos de paja y de materiales trenzables",
  sector_original == "Papel" ~ "Fabricación de papel y de  productos de papel",
- sector_original == "Edición" ~ "Edición e impresión; reproducción de grabaciones",
+ sector_original %in% c("Edición", "Edición e impresión") ~ "Edición e impresión; reproducción de grabaciones",
  sector_original == "Productos de petróleo" ~ "Fabricación de coque, productos de la refinación del petróleo y combustible nuclear",
  sector_original == "Productos químicos" ~ "Fabricación de sustancias y productos químicos",
  sector_original == "Productos de caucho y plástico" ~ "Fabricación de productos de caucho y plástico",
@@ -190,20 +218,23 @@ empleo_total <- empleo_total %>%
  sector_original == "Otros equipo de transporte" ~ "Fabricación de equipo de transporte n.c.p.",
  sector_original == "Muebles" ~ "Fabricación de muebles y colchones; industrias manufactureras n.c.p.",
  sector_original == "Reciclamiento de desperdicios y desechos" ~ "Reciclamiento",
- sector_original == "Electricidad, gas y agua" ~ "Electricidad, gas y agua",
- sector_original == "Captación, depuración y distribución de agua" ~ "Captación , depuración y distribución de agua",
+ sector_original == "ELECTRICIDAD, GAS Y AGUA" ~ "Electricidad, gas y agua",
  sector_original == "Construccion" ~ "Construcción",
  sector_original %in% c("Vta y reparación de vehículos. vta por menor de combustible","Comercio al por mayor","Comercio al por menor") ~ "Comercio mayorista, minorista y reparaciones",
  sector_original == "Servicios de hoteleria y restaurantes" ~ "Servicios de hoteleria y restaurantes",
  sector_original %in% c("Transporte ferroviario y automotor y por tuberias","Transporte marítimo y fluvial","Transporte aéreo de cargas y de pasajeros","Manipulación de carga, almacenamiento y depósito") 
  ~ "Transporte",
  sector_original == "Telecomunicaciones y correos" ~ "Comunicaciones",
- sector_original == "Intermediacion financiera y otros servicios financieros" ~ "Intermediación financiera y otros servicios financieros",
+ sector_original %in% c( "Intermediacion financiera y otros servicios financieros","INTERMEDIACION FINANCIERA Y OTROS SERVICIOS FINANCIEROS") ~ "Intermediación financiera y otros servicios financieros",
  sector_original == "Seguros" ~ "Servicios de seguros",
  sector_original == "Servicios auxiliares a la actividad financiera" ~ "Servicios auxiliares a la actividad financiera",
  sector_original == "Servicios inmobiliarios" ~ "Servicios inmobiliarios",
  sector_original == "Eliminación de desperdicios" ~ "Eliminación de desperdicios y aguas residuales, saneamiento y servicios similares",
  sector_original == "Servicios culturales, deportivos y de esparcimiento" ~ "Servicios culturales y deportivos. Otras actividades",
+ sector_original == "Servicios n.c.p." ~ "Servicios n.c.p.",
+ sector_original == "Enseñanza" ~ "Enseñanza",
+ sector_original == "Servicios sociales y de salud" ~ "Servicios sociales y de salud",
+ sector_original =="HOTELERIA Y RESTAURANTES" ~ "Servicios de hoteleria y restaurantes",
  TRUE ~ sector_original 
     ))
 
@@ -232,10 +263,5 @@ empleo_total <-
   )
 
 saveRDS(empleo_total, "02_input/empleo_sector.rds")
-
-
-
-
-
 
 
