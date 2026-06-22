@@ -1,9 +1,9 @@
 {
     "id": "2823B0BA",
-    "path": "C:/Users/sebas/OneDrive/Documentos/GitHub/TP-ciencia-de-datos/03_scripts/analisis_descriptivo.R",
+    "path": "~/GitHub/TP-ciencia-de-datos/03_scripts/analisis_descriptivo.R",
     "project_path": "03_scripts/analisis_descriptivo.R",
     "type": "r_source",
-    "hash": "3755079076",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1782165168154.0,
@@ -12,8 +12,8 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "12,39",
-        "scrollLine": "0"
+        "cursorPosition": "9,30",
+        "scrollLine": "19"
     },
     "folds": "",
     "lastKnownWriteTime": 1782166208,
