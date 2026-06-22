@@ -4,7 +4,7 @@ library(tidyverse)
 tabla_rca <- readRDS("02_scripts/rds/base_filtrada.rds")
 nrow(tabla_rca)
 
-#creamos rca promedio 
+#creamos rca promedio
 
 #2
 rca_promedio <- tabla_rca %>% 
