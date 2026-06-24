@@ -59,7 +59,13 @@ TP-ciencia-de-datos/
 └── README.md
 ```
    
+## Reproducción
 
+### Paquetes necesarios
+
+```r
+install.packages(c("tidyverse", "readxl", "scales"))
+```
 
 
 
