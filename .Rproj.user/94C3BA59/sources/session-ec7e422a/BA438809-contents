@@ -123,7 +123,7 @@ g_mapa <- g_mapa +  #creación de flecha
     size = 4,
     fontface = "bold"
   )
-
+print(g_mapa)
 ggsave(
   "04_output/imagen_grafico_mapa.png",
   plot = g_mapa,

@@ -41,6 +41,7 @@ vab_df <- vab_df %>%
       TRUE ~ sector_agregado
     )
   )
+#luego los compacto en un mismo sector
 vab_df <- vab_df %>%
   group_by(provincia, sector_agregado, anio) %>%
   summarise(
@@ -51,7 +52,5 @@ vab_df <- vab_df %>%
   arrange(provincia, sector_agregado, anio, vab, empleo_registrado)
 
 nrow(vab_df)
-
-
 
 saveRDS(vab_df, "02_input/tabla_procesados_final.rds")            
