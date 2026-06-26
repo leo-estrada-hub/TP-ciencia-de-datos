@@ -63,7 +63,7 @@ min(base_plot$vab)
 
 
 ggsave(
-  filename = "04_output/graficos/imagen_grafico_scatter_plot.png",
+  filename = "04_output/imagen_grafico_scatter_plot.png",
   width = 10,
   height = 7,
   dpi = 300,

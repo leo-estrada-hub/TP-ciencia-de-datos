@@ -140,7 +140,7 @@ g_mapa <- g_mapa +
 print(g_mapa) 
 
 ggsave(
-  "04_output/graficos/imagen_grafico_mapa.png",
+  "04_output/imagen_grafico_mapa.png",
   plot = g_mapa,
   width = 14,
   height = 10,
