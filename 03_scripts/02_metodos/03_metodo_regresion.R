@@ -135,31 +135,6 @@ vif(modelo_completo)
 #implicando que por el unico factor que se infla es por la interaccion
 #razon por la que no es preocupante esta inflacion
 
-#Grafico exploratorio
-ggplot(
-  base_regresion,
-  aes(
-    x = log(vab),
-    y = log(empleo),
-    color = factor(dummy_rca)
-  ))+
-  geom_point(alpha = 0.15, size= 1) +
-               geom_smooth(method = "lm", se = FALSE, linewidth = 1.2) +
-               labs(
-                 x = "log(VAB)",
-                 y = "log(Empleo)",
-                 color = "RCA"
-               ) + scale_color_manual(
-                 values = c("grey70", "#1f77b4"),
-                 labels = c("RCA ≤ 1", "RCA > 1")
-               )
-
-#segun lo visto en el grafico y la tabla de regresion, se puede observar que 
-#existe una clara relacion positiva entre vab y empleo. 
-#Y la mas importante, sectores con RCA>1 se parte de un nivel mas bajo 
-#(caso tabacalera de corrientes por ejemplo), cuando crece el VAB, crece mas 
-#fuerte en empleo que los que son RCA<=1
-
 #Visualización de coeficientes con gt
 tidy(modelo_completo) %>%
   gt()%>%
