@@ -4,7 +4,7 @@ library(lmtest)     # bptest(), coeftest()
 library(sandwich)   # vcovHC() — errores robustos
 library(car)        # vif() — prueba de hipotesis conjunta 
 library(gt)         # para mejorar visualizacion de tablas
-
+library(webshot2)   #para la conversion de html a png
 options(scipen = 999) #evito notacion cientifica
 theme_set(theme_minimal(base_size = 12)) #grafico por defecto para analizar regresiones
 
@@ -136,16 +136,48 @@ vif(modelo_completo)
 #razon por la que no es preocupante esta inflacion
 
 #Visualización de coeficientes con gt
-tidy(modelo_completo) %>%
-  gt()%>%
+tabla_regresion <- tidy(modelo_completo) %>%
+  select(
+    term,
+    estimate,
+    std.error,
+    statistic,
+    p.value
+  ) %>%
+  mutate(
+    term = dplyr::recode(     #para que no lea otro recode de otro paquete (ejemplo car)
+      term,
+      `(Intercept)` = "Intercepto",
+      `log(vab)` = "log(VAB)",
+      `dummy_rca` = "Dummy RCA > 1",
+      `log(vab):dummy_rca` = "log(VAB) × Dummy RCA"
+    )
+  ) %>%
+  rename(
+    Término = term,
+    Coeficiente = estimate,
+    `Error estándar` = std.error,
+    `Estadístico t` = statistic,
+    `p-valor` = p.value
+  ) %>%
+  gt() %>%
   fmt_number(
-    columns = c(estimate, std.error, statistic,p.value),
+    columns = c(
+      Coeficiente,
+      `Error estándar`,
+      `Estadístico t`,
+      `p-valor`
+    ),
     decimals = 3
   )
+gtsave(
+  tabla_regresion,
+  "04_output/tablas/tabla_regresion.png"
+)
 
 #Visualización de estadística con gt
 
-glance(modelo_completo)%>% #seleccionamos los datos a visualizar
+tabla_estadisticas_reg <- glance(modelo_completo)%>% #seleccionamos los datos a visualizar
   select(
     nobs,
     r.squared,
@@ -182,6 +214,8 @@ glance(modelo_completo)%>% #seleccionamos los datos a visualizar
     decimals = 3
   )
 
+gtsave(tabla_estadisticas_reg,
+       "04_output/tablas/tabla_estadisticas_reg.png")
 #############################################################################
 #A modo de benchmark se utilizará la base con servicios.
 #Será con el fin de ver qué tanto cambia con TODOS los sectores de la economía
